@@ -35,3 +35,17 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+@keyframes story-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}

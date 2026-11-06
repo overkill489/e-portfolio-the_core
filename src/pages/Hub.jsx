@@ -4,9 +4,12 @@ import { realms } from "../data/realms";
 import RealmNavigation from "../components/RealmNavigation";
 import RealmPreview from "../components/RealmPreview";
 import ProjectsRealm from "./ProjectRealm";
+import SkillsRealm from "./SkillsRealm";
+import StoryRealm from "./StoryRealm";
 
 export default function Hub({ selected, onSelect, onBack }) {
   const [hoveredRealm, setHoveredRealm] = useState(null);
+  const [requestedProject, setRequestedProject] = useState(null);
 
   const previewRealm =
     realms.find((realm) => realm.id === hoveredRealm) ?? null;
@@ -16,6 +19,36 @@ export default function Hub({ selected, onSelect, onBack }) {
   if (selected === "projects") {
     return (
       <ProjectsRealm
+        key={requestedProject ?? "gallery"}
+        initialProject={requestedProject}
+        onBack={() => {
+          setRequestedProject(null);
+          setHoveredRealm(null);
+          onBack();
+        }}
+      />
+    );
+  }
+
+  if (selected === "skills") {
+    return (
+      <SkillsRealm
+        onBack={() => {
+          setHoveredRealm(null);
+          onBack();
+        }}
+        onOpenProject={(projectId) => {
+          setRequestedProject(projectId);
+          setHoveredRealm(null);
+          onSelect("projects");
+        }}
+      />
+    );
+  }
+
+  if (selected === "story") {
+    return (
+      <StoryRealm
         onBack={() => {
           setHoveredRealm(null);
           onBack();

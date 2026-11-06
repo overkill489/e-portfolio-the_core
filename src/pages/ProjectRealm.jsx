@@ -4,8 +4,8 @@ import ProjectCard from "../components/ProjectCard";
 import ProjectInspection from "../components/ProjectInspection";
 import { projects } from "../data/projects";
 
-export default function ProjectsRealm({ onBack }) {
-  const [selectedProject, setSelectedProject] = useState(null);
+export default function ProjectsRealm({ onBack, initialProject = null }) {
+  const [selectedProject, setSelectedProject] = useState(initialProject);
 
   const activeProject = projects.find(
     (project) => project.id === selectedProject,
