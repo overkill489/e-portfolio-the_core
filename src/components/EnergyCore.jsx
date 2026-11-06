@@ -10,7 +10,6 @@ function EnergyNucleus() {
     if (!nucleusRef.current) return;
 
     const time = state.clock.elapsedTime;
-
     const pulse = 1 + Math.sin(time * 2) * 0.04;
 
     nucleusRef.current.scale.setScalar(pulse);
@@ -20,6 +19,7 @@ function EnergyNucleus() {
     <group ref={nucleusRef}>
       <mesh>
         <icosahedronGeometry args={[0.65, 3]} />
+
         <meshStandardMaterial
           color="#00d9ff"
           emissive="#00aaff"
@@ -33,6 +33,7 @@ function EnergyNucleus() {
 
       <mesh scale={1.12}>
         <icosahedronGeometry args={[0.65, 2]} />
+
         <meshBasicMaterial
           color="#55eaff"
           wireframe
@@ -61,6 +62,7 @@ function ReactorShell() {
     <group ref={shellRef}>
       <mesh scale={1.015}>
         <icosahedronGeometry args={[1.15, 1]} />
+
         <meshBasicMaterial
           color="#00cfff"
           wireframe
@@ -72,6 +74,7 @@ function ReactorShell() {
 
       <mesh>
         <icosahedronGeometry args={[1.18, 1]} />
+
         <meshBasicMaterial
           color="#001019"
           wireframe
@@ -97,7 +100,8 @@ function OrbitalRing({ radius, rotation, speed, color }) {
   return (
     <group rotation={rotation}>
       <mesh ref={ringRef}>
-        <torusGeometry args={[radius, 0.012, 8, 180]} />
+        <torusGeometry args={[radius, 0.012, 6, 128]} />
+
         <meshBasicMaterial color={color} toneMapped={false} />
       </mesh>
     </group>
@@ -108,7 +112,11 @@ function EnergyParticles() {
   const particlesRef = useRef();
 
   const positions = useMemo(() => {
-    const count = 180;
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 767px)").matches;
+
+    const count = isMobile ? 90 : 180;
     const positions = new Float32Array(count * 3);
 
     for (let i = 0; i < count; i++) {
@@ -146,6 +154,7 @@ function EnergyParticles() {
         transparent
         opacity={0.65}
         depthWrite={false}
+        toneMapped={false}
       />
     </points>
   );
@@ -157,10 +166,11 @@ export default function EnergyCore({ energized = false, pointerRef }) {
   useFrame((state, delta) => {
     if (!coreRef.current) return;
 
-    const pointer = pointerRef?.current ?? { x: 0, y: 0 };
+    const pointerX = pointerRef?.current?.x ?? 0;
+    const pointerY = pointerRef?.current?.y ?? 0;
 
-    const targetX = pointer.y * 0.15;
-    const targetY = pointer.x * 0.22;
+    const targetX = pointerY * 0.15;
+    const targetY = pointerX * 0.22;
 
     coreRef.current.rotation.x = THREE.MathUtils.damp(
       coreRef.current.rotation.x,
@@ -192,6 +202,7 @@ export default function EnergyCore({ energized = false, pointerRef }) {
     <Float speed={1} rotationIntensity={0.08} floatIntensity={0.25}>
       <group ref={coreRef}>
         <EnergyNucleus />
+
         <ReactorShell />
 
         <OrbitalRing

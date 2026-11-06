@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { realms } from "../data/realms";
 
@@ -9,77 +10,64 @@ import SkillsRealm from "./SkillsRealm";
 import StoryRealm from "./StoryRealm";
 import ProcessRealm from "./ProcessRealm";
 import ContactRealm from "./ContactRealm";
+import RecruiterAccess from "../components/RecruiterAccess";
 
-export default function Hub({ selected, onSelect, onBack }) {
+export default function Hub() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { projectId } = useParams();
+
   const [hoveredRealm, setHoveredRealm] = useState(null);
-  const [requestedProject, setRequestedProject] = useState(null);
+
+  const path = location.pathname;
+  const selected = path.startsWith("/projects/") ? "projects" : path.slice(1);
 
   const previewRealm =
     realms.find((realm) => realm.id === hoveredRealm) ?? null;
 
   const activeRealm = realms.find((realm) => realm.id === selected) ?? null;
 
+  const goToHub = () => {
+    setHoveredRealm(null);
+    navigate("/hub");
+  };
+
+  const selectRealm = (realmId) => {
+    setHoveredRealm(null);
+    navigate(`/${realmId}`);
+  };
+
+  const openProject = (id) => {
+    setHoveredRealm(null);
+
+    navigate(id ? `/projects/${encodeURIComponent(id)}` : "/projects");
+  };
+
   if (selected === "projects") {
     return (
       <ProjectsRealm
-        key={requestedProject ?? "gallery"}
-        initialProject={requestedProject}
-        onBack={() => {
-          setRequestedProject(null);
-          setHoveredRealm(null);
-          onBack();
-        }}
+        key={projectId ?? "gallery"}
+        initialProject={projectId ?? null}
+        onSelectProject={openProject}
+        onBack={goToHub}
       />
     );
   }
 
   if (selected === "skills") {
-    return (
-      <SkillsRealm
-        onBack={() => {
-          setHoveredRealm(null);
-          onBack();
-        }}
-        onOpenProject={(projectId) => {
-          setRequestedProject(projectId);
-          setHoveredRealm(null);
-          onSelect("projects");
-        }}
-      />
-    );
+    return <SkillsRealm onBack={goToHub} onOpenProject={openProject} />;
   }
 
   if (selected === "story") {
-    return (
-      <StoryRealm
-        onBack={() => {
-          setHoveredRealm(null);
-          onBack();
-        }}
-      />
-    );
+    return <StoryRealm onBack={goToHub} />;
   }
 
   if (selected === "process") {
-    return (
-      <ProcessRealm
-        onBack={() => {
-          setHoveredRealm(null);
-          onBack();
-        }}
-      />
-    );
+    return <ProcessRealm onBack={goToHub} />;
   }
 
   if (selected === "contact") {
-    return (
-      <ContactRealm
-        onBack={() => {
-          setHoveredRealm(null);
-          onBack();
-        }}
-      />
-    );
+    return <ContactRealm onBack={goToHub} />;
   }
 
   if (activeRealm) {
@@ -107,8 +95,7 @@ export default function Hub({ selected, onSelect, onBack }) {
           </h2>
 
           <p className="mt-4 text-sm leading-7 text-gray-400">
-            This destination is ready for development. Soon, it will become its
-            own interactive environment.
+            This destination is ready for development.
           </p>
 
           <div className="mt-8 flex items-center gap-2 text-xs text-cyan-400">
@@ -119,10 +106,7 @@ export default function Hub({ selected, onSelect, onBack }) {
 
         <button
           type="button"
-          onClick={() => {
-            setHoveredRealm(null);
-            onBack();
-          }}
+          onClick={goToHub}
           className="mt-10 flex w-fit cursor-pointer items-center gap-3 text-xs tracking-[0.2em] text-cyan-300 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-cyan-300"
         >
           <ArrowLeft size={17} />
@@ -161,7 +145,7 @@ export default function Hub({ selected, onSelect, onBack }) {
             realms={realms.slice(0, 3)}
             hoveredRealm={hoveredRealm}
             onHover={setHoveredRealm}
-            onSelect={onSelect}
+            onSelect={selectRealm}
           />
         </div>
 
@@ -174,11 +158,11 @@ export default function Hub({ selected, onSelect, onBack }) {
             realms={realms.slice(3)}
             hoveredRealm={hoveredRealm}
             onHover={setHoveredRealm}
-            onSelect={onSelect}
+            onSelect={selectRealm}
           />
         </div>
       </div>
-
+      <RecruiterAccess />
       <div className="mt-8 flex flex-col justify-between gap-3 border-t border-white/10 pt-6 text-[10px] tracking-[0.2em] text-gray-500 sm:flex-row">
         <span>JEREMIAH AUSTIN / DEVELOPER PORTFOLIO</span>
         <span>MOVE TO PREVIEW / SELECT TO EXPLORE</span>

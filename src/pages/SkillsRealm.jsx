@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowUpRight, Cpu } from "lucide-react";
 import { skills, skillCategories } from "../data/skills";
 import { projects } from "../data/projects";
@@ -9,6 +9,26 @@ export default function SkillsRealm({ onBack, onOpenProject }) {
   const [category, setCategory] = useState("All");
   const [selectedSkill, setSelectedSkill] = useState("react");
   const [viewMode, setViewMode] = useState("3d");
+
+  const [isDesktop, setIsDesktop] = useState(
+    () => window.matchMedia("(min-width: 768px)").matches,
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+
+    const handleChange = (event) => {
+      setIsDesktop(event.matches);
+    };
+
+    setIsDesktop(mediaQuery.matches);
+
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
+  }, []);
 
   const visibleSkills =
     category === "All"
@@ -129,29 +149,19 @@ export default function SkillsRealm({ onBack, onOpenProject }) {
               </div>
             </div>
 
-            <div className="md:hidden">
+            {isDesktop && viewMode === "3d" ? (
+              <SkillConstellation
+                skills={visibleSkills}
+                selectedSkill={selectedSkill}
+                onSelect={setSelectedSkill}
+              />
+            ) : (
               <SkillNetwork
                 skills={visibleSkills}
                 selectedSkill={selectedSkill}
                 onSelect={setSelectedSkill}
               />
-            </div>
-
-            <div className="hidden md:block">
-              {viewMode === "3d" ? (
-                <SkillConstellation
-                  skills={visibleSkills}
-                  selectedSkill={selectedSkill}
-                  onSelect={setSelectedSkill}
-                />
-              ) : (
-                <SkillNetwork
-                  skills={visibleSkills}
-                  selectedSkill={selectedSkill}
-                  onSelect={setSelectedSkill}
-                />
-              )}
-            </div>
+            )}
           </div>
 
           <div className="relative min-w-0 overflow-hidden border border-cyan-500/20 bg-cyan-950/[0.08] p-6 sm:p-8">
