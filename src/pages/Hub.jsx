@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { realms } from "../data/realms";
 import RealmNavigation from "../components/RealmNavigation";
 import RealmPreview from "../components/RealmPreview";
+import ProjectsRealm from "./ProjectRealm";
 
 export default function Hub({ selected, onSelect, onBack }) {
   const [hoveredRealm, setHoveredRealm] = useState(null);
@@ -11,6 +12,17 @@ export default function Hub({ selected, onSelect, onBack }) {
     realms.find((realm) => realm.id === hoveredRealm) ?? null;
 
   const activeRealm = realms.find((realm) => realm.id === selected) ?? null;
+
+  if (selected === "projects") {
+    return (
+      <ProjectsRealm
+        onBack={() => {
+          setHoveredRealm(null);
+          onBack();
+        }}
+      />
+    );
+  }
 
   if (activeRealm) {
     return (

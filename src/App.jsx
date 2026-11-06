@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import ReactorScene from "./components/ReactorScene";
 import Navbar from "./components/Navbar";
@@ -6,9 +5,19 @@ import Landing from "./pages/Landing";
 import Hub from "./pages/Hub";
 
 export default function App() {
-  const [phase, setPhase] = useState("landing");
+  const [phase, setPhase] = useState(() => {
+    const savedPhase = sessionStorage.getItem("the-core-phase");
+
+    return savedPhase === "hub" ? "hub" : "landing";
+  });
   const [hovered, setHovered] = useState(false);
   const [selectedRealm, setSelectedRealm] = useState(null);
+
+  useEffect(() => {
+    if (phase === "hub" || phase === "landing") {
+      sessionStorage.setItem("the-core-phase", phase);
+    }
+  }, [phase]);
 
   const entering = phase === "entering";
   const inHub = phase === "hub";
@@ -43,10 +52,7 @@ export default function App() {
     <main className="relative min-h-screen overflow-hidden bg-[#050505] text-white">
       {!inHub && (
         <div className="fixed inset-0">
-          <ReactorScene
-            energized={hovered}
-            entering={entering}
-          />
+          <ReactorScene energized={hovered} entering={entering} />
         </div>
       )}
 

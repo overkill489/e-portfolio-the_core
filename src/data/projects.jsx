@@ -1,0 +1,110 @@
+export const projects = [
+  {
+    id: "skinstric",
+    number: "01",
+    name: "sKINsTRIC AI",
+    category: "AI / Frontend Development",
+    description:
+      "An interactive AI-powered skin analysis experience with a multi-step onboarding process, image selection, and dynamic demographic results.",
+    details:
+      "Developed a responsive React application featuring animated transitions, guided user onboarding, API integration, and interactive demographic visualizations.",
+    technologies: ["React", "Vite", "JavaScript", "Tailwind CSS", "REST APIs"],
+    features: [
+      "Multi-step onboarding",
+      "AI analysis API integration",
+      "Image selection and validation",
+      "Interactive demographic results",
+      "Responsive animated interface",
+    ],
+    github: "https://github.com/overkill489/Jeremiah-SkinstricAi-Internship",
+    live: "https://jeremiah-skinstricai-internshipvercel-ckih3n8jt-bigboycode.vercel.app/",
+    accent: "#38dfff",
+    image: "/projects/Skinstric.png",
+  },
+  {
+    id: "summarist",
+    number: "02",
+    name: "SUMMARIST",
+    category: "Full-Stack Features / Web Application",
+    description:
+      "A book discovery and audio experience with user authentication, personalized libraries, and an interactive audio player.",
+    details:
+      "Built a responsive Next.js application featuring book discovery, Firebase authentication, saved libraries, and audio playback controls.",
+    technologies: [
+      "Next.js",
+      "React",
+      "JavaScript",
+      "Tailwind CSS",
+      "Firebase",
+    ],
+    features: [
+      "Book discovery and recommendations",
+      "Authentication and protected pages",
+      "Firestore saved-book library",
+      "Audio player with skip controls",
+      "Responsive layouts",
+    ],
+    github: "https://github.com/overkill489/jeremiah-advanced-internship_",
+    live: "https://jeremiah-advanced-internship1.vercel.app/",
+    accent: "#8b9dff",
+    image: "/projects/Summarist.png",
+  },
+  {
+    id: "movie-final",
+    number: "04",
+    name: "MOVIE PROJECT",
+    category: "Movie Discovery / Web Application",
+    description:
+      "A responsive movie discovery application featuring popular, top-rated, and upcoming films, search functionality, and dedicated movie detail pages.",
+    details:
+      "Developed a React movie application using Vite and React Router. The application organizes movies into discovery categories and provides dynamic routes for individual movie details.",
+    technologies: [
+      "React",
+      "Vite",
+      "JavaScript",
+      "React Router",
+      "CSS",
+      "Font Awesome",
+    ],
+    features: [
+      "Popular movie discovery",
+      "Top-rated movie listings",
+      "Upcoming movie listings",
+      "Movie search interface",
+      "Dynamic movie detail pages",
+      "Reusable React components",
+    ],
+    github: "https://github.com/overkill489/Movie-Final_",
+    live: "https://movie-final2-ln12k21v6-bigboycode.vercel.app/",
+    accent: "#a78bfa",
+    image: "/projects/Movie.png",
+  },
+  {
+    id: "weatherly",
+    number: "03",
+    name: "WEATHERLY",
+    category: "Frontend / Backend Integration",
+    description:
+      "A weather application connecting a React interface to a Node.js backend and an external weather API.",
+    details:
+      "Developed a weather application using React, Node.js, Express-free HTTP routing, and OpenWeather API integration.",
+    technologies: [
+      "React",
+      "Vite",
+      "JavaScript",
+      "Node.js",
+      "Axios",
+      "REST APIs",
+    ],
+    features: [
+      "City-based weather search",
+      "Backend API integration",
+      "Weather forecast processing",
+      "US customary weather units",
+      "Loading and error handling",
+    ],
+    github: "https://github.com/overkill489/Weatherly",
+    live: null,
+    accent: "#f0b86d",
+  },
+];
