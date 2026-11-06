@@ -8,7 +8,7 @@ THE CORE combines modern web development with real-time 3D graphics, cinematic a
 
 **Developer:** Jeremiah Austin
 
-**Live Website:** Coming Soon
+**Live Website:** https://e-portfolio-thecore-vercel.vercel.app/
 
 **GitHub:** https://github.com/overkill489
 
