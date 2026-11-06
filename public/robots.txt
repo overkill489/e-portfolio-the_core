@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://e-portfolio-thecore-vercel.vercel.app/sitemap.xml
