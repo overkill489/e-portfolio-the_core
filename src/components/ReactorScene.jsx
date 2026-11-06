@@ -4,7 +4,6 @@ import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 import EnergyCore from "./EnergyCore";
 
-
 function CameraFlight({ entering }) {
   useFrame((state, delta) => {
     const isMobile = state.size.width < 768;
@@ -16,7 +15,7 @@ function CameraFlight({ entering }) {
       state.camera.position.z,
       targetZ,
       2.8,
-      delta
+      delta,
     );
 
     state.camera.lookAt(0, 0, 0);
@@ -25,8 +24,7 @@ function CameraFlight({ entering }) {
   return null;
 }
 
-
-export default function ReactorScene({ energized, entering }) {
+export default function ReactorScene({ energized, entering, onReady }) {
   const pointerRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -69,6 +67,9 @@ export default function ReactorScene({ energized, entering }) {
       }}
       resize={{
         debounce: 100,
+      }}
+      onCreated={() => {
+        onReady?.();
       }}
     >
       <color attach="background" args={["#050505"]} />

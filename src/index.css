@@ -105,3 +105,45 @@ textarea {
     scroll-behavior: auto;
   }
 }
+
+@keyframes core-page-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.core-page-enter {
+  animation: core-page-enter 900ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .core-page-enter {
+    animation: none;
+  }
+}
+
+@keyframes core-realm-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.core-realm-enter {
+  animation: core-realm-enter 550ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .core-realm-enter {
+    animation: none;
+  }
+}
