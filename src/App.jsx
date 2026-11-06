@@ -1,56 +1,66 @@
 import { useEffect, useState } from "react";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router";
+
 import ReactorScene from "./components/ReactorScene";
 import Navbar from "./components/Navbar";
 import Landing from "./pages/Landing";
 import Hub from "./pages/Hub";
 
 export default function App() {
-  const [phase, setPhase] = useState(() => {
-    const savedPhase = sessionStorage.getItem("the-core-phase");
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    return savedPhase === "hub" ? "hub" : "landing";
-  });
+  const [entering, setEntering] = useState(false);
   const [hovered, setHovered] = useState(false);
-  const [selectedRealm, setSelectedRealm] = useState(null);
 
-  useEffect(() => {
-    if (phase === "hub" || phase === "landing") {
-      sessionStorage.setItem("the-core-phase", phase);
-    }
-  }, [phase]);
-
-  const entering = phase === "entering";
-  const inHub = phase === "hub";
+  const isLanding = location.pathname === "/";
+  const showLanding = isLanding || entering;
+  const inHub = !showLanding;
 
   useEffect(() => {
     if (!entering) return;
 
     const timeout = setTimeout(() => {
-      setPhase("hub");
+      setEntering(false);
+      navigate("/hub");
     }, 1600);
 
     return () => clearTimeout(timeout);
-  }, [entering]);
+  }, [entering, navigate]);
 
   const enterCore = () => {
     setHovered(false);
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setPhase("hub");
-    } else {
-      setPhase("entering");
+      setEntering(false);
+      navigate("/hub");
+      return;
     }
+
+    setEntering(true);
+  };
+
+  const skipEntrance = () => {
+    setEntering(false);
+    setHovered(false);
+    navigate("/hub");
   };
 
   const restart = () => {
-    setSelectedRealm(null);
+    setEntering(false);
     setHovered(false);
-    setPhase("landing");
+    navigate("/");
   };
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#050505] text-white">
-      {!inHub && (
+      {showLanding && (
         <div className="fixed inset-0">
           <ReactorScene energized={hovered} entering={entering} />
         </div>
@@ -60,19 +70,43 @@ export default function App() {
 
       <Navbar inHub={inHub} onRestart={restart} />
 
-      {!inHub ? (
+      {entering ? (
         <Landing
           entering={entering}
           onEnter={enterCore}
-          onSkip={() => setPhase("hub")}
+          onSkip={skipEntrance}
           onHover={setHovered}
         />
       ) : (
-        <Hub
-          selected={selectedRealm}
-          onSelect={setSelectedRealm}
-          onBack={() => setSelectedRealm(null)}
-        />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Landing
+                entering={false}
+                onEnter={enterCore}
+                onSkip={skipEntrance}
+                onHover={setHovered}
+              />
+            }
+          />
+
+          <Route path="/hub" element={<Hub />} />
+
+          <Route path="/projects" element={<Hub />} />
+
+          <Route path="/projects/:projectId" element={<Hub />} />
+
+          <Route path="/skills" element={<Hub />} />
+
+          <Route path="/story" element={<Hub />} />
+
+          <Route path="/process" element={<Hub />} />
+
+          <Route path="/contact" element={<Hub />} />
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       )}
     </main>
   );

@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { realms } from "../data/realms";
+
 import RealmNavigation from "../components/RealmNavigation";
 import RealmPreview from "../components/RealmPreview";
 import ProjectsRealm from "./ProjectRealm";
 import SkillsRealm from "./SkillsRealm";
 import StoryRealm from "./StoryRealm";
+import ProcessRealm from "./ProcessRealm";
+import ContactRealm from "./ContactRealm";
 
 export default function Hub({ selected, onSelect, onBack }) {
   const [hoveredRealm, setHoveredRealm] = useState(null);
@@ -49,6 +52,28 @@ export default function Hub({ selected, onSelect, onBack }) {
   if (selected === "story") {
     return (
       <StoryRealm
+        onBack={() => {
+          setHoveredRealm(null);
+          onBack();
+        }}
+      />
+    );
+  }
+
+  if (selected === "process") {
+    return (
+      <ProcessRealm
+        onBack={() => {
+          setHoveredRealm(null);
+          onBack();
+        }}
+      />
+    );
+  }
+
+  if (selected === "contact") {
+    return (
+      <ContactRealm
         onBack={() => {
           setHoveredRealm(null);
           onBack();
